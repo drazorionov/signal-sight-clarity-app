@@ -6,6 +6,12 @@ import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { HoverCard, HoverCardContent, HoverCardTrigger } from "@/components/ui/hover-card";
+import { Table, TableHeader, TableBody, TableRow, TableHead, TableCell } from "@/components/ui/table";
+
+interface DetailRow {
+  label: string;
+  value: string;
+}
 
 interface QualitySignalProps {
   title: string;
@@ -14,6 +20,7 @@ interface QualitySignalProps {
   date: string;
   trend?: "up" | "down";
   description?: string;
+  details?: DetailRow[];
 }
 
 export const QualitySignal = ({
@@ -22,7 +29,8 @@ export const QualitySignal = ({
   status,
   date,
   trend,
-  description
+  description,
+  details
 }: QualitySignalProps) => {
   const [isExpanded, setIsExpanded] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
@@ -89,25 +97,29 @@ export const QualitySignal = ({
             <div className="mt-1">
               <p className="text-xs text-muted-foreground leading-snug">{displayDescription}</p>
               
-              {isLongDescription && (
+              {(isLongDescription || details) && (
                 <div className="mt-1 flex justify-between items-center">
-                  <button 
-                    onClick={() => setIsExpanded(!isExpanded)} 
-                    className="text-[10px] text-blue-500 hover:underline flex items-center"
-                  >
-                    {isExpanded ? (
-                      <>Less <ChevronUp className="h-3 w-3 ml-0.5" /></>
-                    ) : (
-                      <>More <ChevronDown className="h-3 w-3 ml-0.5" /></>
-                    )}
-                  </button>
+                  {isLongDescription && (
+                    <button 
+                      onClick={() => setIsExpanded(!isExpanded)} 
+                      className="text-[10px] text-blue-500 hover:underline flex items-center"
+                    >
+                      {isExpanded ? (
+                        <>Less <ChevronUp className="h-3 w-3 ml-0.5" /></>
+                      ) : (
+                        <>More <ChevronDown className="h-3 w-3 ml-0.5" /></>
+                      )}
+                    </button>
+                  )}
                   
-                  <button 
-                    onClick={() => setDialogOpen(true)}
-                    className="text-[10px] text-blue-500 hover:underline"
-                  >
-                    Details
-                  </button>
+                  {details && (
+                    <button 
+                      onClick={() => setDialogOpen(true)}
+                      className="text-[10px] text-blue-500 hover:underline"
+                    >
+                      Details
+                    </button>
+                  )}
                 </div>
               )}
             </div>
@@ -116,7 +128,7 @@ export const QualitySignal = ({
       </Card>
       
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-md max-h-[80vh]">
+        <DialogContent className="max-w-2xl max-h-[80vh]">
           <DialogHeader>
             <DialogTitle className="flex items-center gap-2">
               {title}
@@ -134,9 +146,27 @@ export const QualitySignal = ({
             </span>
             <span className="text-sm text-muted-foreground">Updated: {date}</span>
           </div>
-          <ScrollArea className="max-h-[300px] pr-4">
+          <ScrollArea className="max-h-[400px]">
             {description && (
-              <p className="text-sm">{description}</p>
+              <p className="text-sm mb-4">{description}</p>
+            )}
+            {details && details.length > 0 && (
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    <TableHead>Category</TableHead>
+                    <TableHead>Details</TableHead>
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {details.map((detail, index) => (
+                    <TableRow key={index}>
+                      <TableCell className="font-medium">{detail.label}</TableCell>
+                      <TableCell>{detail.value}</TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             )}
           </ScrollArea>
         </DialogContent>

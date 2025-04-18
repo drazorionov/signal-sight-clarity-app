@@ -12,6 +12,36 @@ const Index = () => {
       
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
         <QualitySignal
+          title="Security Vulnerabilities"
+          value="5"
+          status="warning"
+          date="Apr 18"
+          description="Five medium-severity security vulnerabilities were identified during the last security audit."
+          details={[
+            { label: "Dependency Issues", value: "Outdated dependencies with known CVEs in third-party libraries" },
+            { label: "SQL Injection Risk", value: "Potential SQL injection vulnerability in the reporting module" },
+            { label: "Password Policy", value: "Weak password policy enforcement" },
+            { label: "API Security", value: "Insufficient rate limiting on API endpoints" },
+            { label: "XSS Vulnerability", value: "Cross-site scripting vulnerability in the user profile page" }
+          ]}
+        />
+        
+        <QualitySignal
+          title="Test Coverage Analysis"
+          value="30%"
+          status="warning"
+          date="Apr 17"
+          description="The auto test coverage is lower than expected. Current coverage breakdown by component:"
+          details={[
+            { label: "Frontend UI", value: "25% coverage" },
+            { label: "Backend Services", value: "45% coverage" },
+            { label: "API Layer", value: "35% coverage" },
+            { label: "Database Operations", value: "28% coverage" },
+            { label: "Authentication", value: "55% coverage" }
+          ]}
+        />
+        
+        <QualitySignal
           title="Number of Major Bugs"
           value="10%"
           status="critical"
@@ -43,14 +73,6 @@ const Index = () => {
           date="Apr 17"
           trend="down"
           description="The number of support requests submitted per month less than 10. This represents a 40% reduction compared to the previous quarter, indicating improved product stability and user experience. The majority of remaining support requests are related to feature requests rather than bug reports."
-        />
-        
-        <QualitySignal
-          title="Security Vulnerabilities"
-          value="5"
-          status="warning"
-          date="Apr 18"
-          description="Five medium-severity security vulnerabilities were identified during the last security audit. These include: 1) Outdated dependencies with known CVEs in third-party libraries, 2) Potential SQL injection vulnerability in the reporting module, 3) Weak password policy enforcement, 4) Insufficient rate limiting on API endpoints, 5) Cross-site scripting vulnerability in the user profile page. The security team is working on fixes with estimated completion within two weeks."
         />
         
         <QualitySignal
