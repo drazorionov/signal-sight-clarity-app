@@ -1,6 +1,6 @@
 
 import { useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { AlertCircle, AlertTriangle, CheckCircle, ChevronDown, ChevronUp, TrendingDown, TrendingUp } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -27,41 +27,41 @@ export const QualitySignal = ({
   const [isExpanded, setIsExpanded] = useState(false);
   const [dialogOpen, setDialogOpen] = useState(false);
   
-  const isLongDescription = description && description.length > 100;
+  const isLongDescription = description && description.length > 60;
   const displayDescription = isLongDescription && !isExpanded 
-    ? `${description.substring(0, 100)}...` 
+    ? `${description.substring(0, 60)}...` 
     : description;
 
   const getStatusIcon = () => {
     switch (status) {
       case "critical":
-        return <AlertCircle className="h-5 w-5 text-destructive" />;
+        return <AlertCircle className="h-4 w-4 text-destructive" />;
       case "warning":
-        return <AlertTriangle className="h-5 w-5 text-yellow-500" />;
+        return <AlertTriangle className="h-4 w-4 text-yellow-500" />;
       case "success":
-        return <CheckCircle className="h-5 w-5 text-green-500" />;
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
     }
   };
 
   const getTrendIcon = () => {
     if (!trend) return null;
     return trend === "up" ? (
-      <TrendingUp className="h-4 w-4 text-green-500" />
+      <TrendingUp className="h-3 w-3 text-green-500" />
     ) : (
-      <TrendingDown className="h-4 w-4 text-destructive" />
+      <TrendingDown className="h-3 w-3 text-destructive" />
     );
   };
 
   return (
     <>
       <Card className="hover:shadow-md transition-shadow">
-        <CardHeader className="pb-2">
-          <div className="flex items-center justify-between">
+        <CardContent className="p-4">
+          <div className="flex items-center justify-between mb-2">
             <HoverCard>
               <HoverCardTrigger asChild>
-                <CardTitle className="text-sm font-medium text-muted-foreground truncate max-w-[200px] cursor-help">
+                <h3 className="text-sm font-medium text-muted-foreground truncate max-w-[180px] cursor-help">
                   {title}
-                </CardTitle>
+                </h3>
               </HoverCardTrigger>
               <HoverCardContent className="w-80">
                 <p className="font-semibold">{title}</p>
@@ -69,12 +69,11 @@ export const QualitySignal = ({
             </HoverCard>
             {getStatusIcon()}
           </div>
-        </CardHeader>
-        <CardContent>
-          <div className="flex items-baseline justify-between">
-            <div className="flex items-baseline gap-2">
+          
+          <div className="flex items-baseline justify-between mb-2">
+            <div className="flex items-baseline gap-1">
               <span className={cn(
-                "text-2xl font-bold",
+                "text-xl font-bold",
                 status === "critical" && "text-destructive",
                 status === "warning" && "text-yellow-500",
                 status === "success" && "text-green-500"
@@ -87,27 +86,27 @@ export const QualitySignal = ({
           </div>
           
           {description && (
-            <div className="mt-2">
-              <p className="text-sm text-muted-foreground">{displayDescription}</p>
+            <div className="mt-1">
+              <p className="text-xs text-muted-foreground leading-snug">{displayDescription}</p>
               
               {isLongDescription && (
                 <div className="mt-1 flex justify-between items-center">
                   <button 
                     onClick={() => setIsExpanded(!isExpanded)} 
-                    className="text-xs text-blue-500 hover:underline flex items-center"
+                    className="text-[10px] text-blue-500 hover:underline flex items-center"
                   >
                     {isExpanded ? (
-                      <>Show less <ChevronUp className="h-3 w-3 ml-1" /></>
+                      <>Less <ChevronUp className="h-3 w-3 ml-0.5" /></>
                     ) : (
-                      <>Read more <ChevronDown className="h-3 w-3 ml-1" /></>
+                      <>More <ChevronDown className="h-3 w-3 ml-0.5" /></>
                     )}
                   </button>
                   
                   <button 
                     onClick={() => setDialogOpen(true)}
-                    className="text-xs text-blue-500 hover:underline"
+                    className="text-[10px] text-blue-500 hover:underline"
                   >
-                    Full view
+                    Details
                   </button>
                 </div>
               )}
